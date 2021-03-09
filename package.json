@@ -4,10 +4,10 @@
   "description": "MUD engine with simultaneous turns",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
     "setup": "npm install && echo 'PORT=3000' > .env",
-    "dev": "nodemon index.js",
-    "debug": "nodemon --inspect index.js",
+    "start": "node src/core/server/index.js",
+    "dev": "nodemon src/core/server/index.js",
+    "debug": "nodemon --inspect src/core/server/index.js",
     "build:ui": "rm -rf build && cd ../simMUD-frontend && npm run build --prod && cp -r build ../simMUD-frontend/",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
