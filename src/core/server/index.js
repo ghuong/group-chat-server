@@ -5,7 +5,12 @@ const socketIo = require("socket.io");
 const logger = require("./utils/logger");
 
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
 
 let interval;
 
