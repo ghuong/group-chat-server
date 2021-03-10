@@ -2,17 +2,24 @@
 
 ## About
 
-This is a MUD (Multi-User Domain, or multiplayer text adventure / interactive fiction) game engine written in Node.js that runs as simple server and web client.
+This the server for an anonymous real-time group chat. There is a corresponding [web client](https://github.com/ghuong/group-chat-client).
 
 ## Getting Started
 
 ### Prerequisites
 
-Have npm installed.
+1. Have npm installed
+2. Clone the matching web client project into the same directory containing the server project (but not inside the server project):
+
+```
+git clone https://github.com/ghuong/group-chat-client.git
+```
+
+3. Read the client's documentation and prepare it.
 
 ### Installing
 
-First, run this to install dependencies and setup local Port environment variable:
+First, run this to install dependencies and configure a .env file:
 
 ```bash
 npm setup
@@ -24,11 +31,19 @@ Then verify all tests pass:
 npm test
 ```
 
-Start server on localhost:3000 using nodemon
+Build the client code, and copy it into this project's /build with this script:
 
 ```bash
-npm dev
+npm run build:ui
 ```
+
+Start server on localhost:4001 using nodemon:
+
+```bash
+npm run dev
+```
+
+See package.json for available npm scripts.
 
 ## Usage
 
