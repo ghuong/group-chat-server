@@ -1,14 +1,14 @@
 {
-  "name": "sim-mud",
+  "name": "group-chat-server",
   "version": "0.0.1",
-  "description": "MUD engine with simultaneous turns",
+  "description": "Anonymous real-time group chat server",
   "main": "index.js",
   "scripts": {
-    "setup": "npm install && echo 'PORT=3000' > .env",
+    "setup": "npm install && echo 'PORT=4001' > .env",
     "start": "node src/core/server/index.js",
     "dev": "nodemon src/core/server/index.js",
     "debug": "nodemon --inspect src/core/server/index.js",
-    "build:ui": "rm -rf build && cd ../simMUD-frontend && npm run build --prod && cp -r build ../simMUD-frontend/",
+    "build:ui": "rm -rf build && cd ../group-chat-client && npm run build --prod && cp -r build ../group-chat-client/",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
     "logs:prod": "heroku logs --tail",
