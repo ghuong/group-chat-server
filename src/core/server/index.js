@@ -7,31 +7,30 @@ const logger = require("./utils/logger");
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*", // ? is this safe?
     methods: ["GET", "POST"],
   },
 });
 
-let interval;
-
 io.on("connection", (socket) => {
-  logger.info("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
+  // Join a conversation
+  // const { roomId } = socket.handshake.query;
+  // socket.join(roomId);
+  logger.info("Client connected");
 
+  // Listen for new messages
+  socket.on(config.NEW_CHAT_MESSAGE_EVENT, (data) => {
+    logger.info("New message received. Forwarding to all others...");
+    io.emit(config.NEW_CHAT_MESSAGE_EVENT, data);
+  });
+
+  // Leave the room if user closes socket
   socket.on("disconnect", () => {
     logger.info("Client disconnected");
-    clearInterval(interval);
+    // socket.leave(roomId);
   });
 });
 
-const getApiAndEmit = (socket) => {
-  const response = new Date();
-  socket.emit("FromAPI", response);
-};
-
 server.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`);
+  logger.info(`Server listening on port ${config.PORT}`);
 });
