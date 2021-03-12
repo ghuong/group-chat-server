@@ -20,7 +20,7 @@ io.on("connection", (socket) => {
 
   // Listen for new messages
   socket.on(config.NEW_CHAT_MESSAGE_EVENT, (data) => {
-    logger.info("New message received. Forwarding to all others...");
+    logger.info(`New message received: '${data}' (Forwarding to others...)`);
     io.emit(config.NEW_CHAT_MESSAGE_EVENT, data);
   });
 
