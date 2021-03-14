@@ -1,6 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 # Source: https://github.com/nrwl/full-stack-react-example-app/blob/master/.gitignore
 
+# ignore folder
+/ignore
+
 # dev environment-specific
 .env
 
