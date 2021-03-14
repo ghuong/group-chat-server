@@ -1,23 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const routes = require("../api");
-const config = require("../config");
+const routes = require("../../api");
+const config = require("../../config");
+const healthCheckEndpointsLoader = require("./healthCheckEndpoints");
 const middlewares = require("./middlewares");
 
 /**
  * Express Loader
- * @param {express.Application} app property
+ * @param {express.Application} app
  */
-module.exports = ({ app }) => {
-  /**
-   * Health Check endpoints
-   */
-  app.get("/status", (req, res) => {
-    res.status(200).end();
-  });
-  app.head("/status", (req, res) => {
-    res.status(200).end();
-  });
+module.exports = async ({ app }) => {
+  // Health Check endpoints
+  await healthCheckEndpointsLoader({ app });
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs
@@ -39,7 +33,7 @@ module.exports = ({ app }) => {
   // Load API Routes
   app.use(config.api.prefix, routes());
 
-  // Catch 404 and forward to error handler
+  // Catch 404 unknown endpoints
   app.use(middlewares.unknownEndpoint);
 
   // Error Handler

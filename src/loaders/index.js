@@ -9,7 +9,7 @@ const logger = require("./logger");
  * Startup process of app is separated into testable modules
  * @returns the fully configured http.Server instance
  */
-module.exports = async (app = express()) => {
+module.exports = async ({ app } = { app: express() }) => {
   await expressLoader({ app });
   logger.info("✌️ Express loaded");
 
