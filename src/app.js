@@ -1,19 +1,21 @@
-// const config = require("./utils/config");
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const messagesRouter = require("./controllers/messages");
-const middleware = require("./utils/middleware");
-// const logger = require("./utils/logger");
+const config = require("./config");
+const logger = require("./loaders/logger");
 
-app.use(cors());
-app.use(express.static("build"));
-app.use(express.json());
-app.use(middleware.requestLogger);
+const startServer = async () => {
+  const httpServer = await require("./loaders")();
 
-app.use("/api/messages", messagesRouter);
+  httpServer
+    .listen(config.port, () => {
+      logger.info(`
+        ################################################
+        🛡️  Server listening on port: ${config.port} 🛡️
+        ################################################
+      `);
+    })
+    .on("error", (err) => {
+      logger.error(err);
+      process.exit(1);
+    });
+};
 
-app.use(middleware.unknownEndpoint);
-app.use(middleware.errorHandler);
-
-module.exports = app;
+startServer();
