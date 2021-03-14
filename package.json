@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install && echo 'PORT=4001' > .env",
-    "start": "node src/core/server/index.js",
-    "dev": "nodemon src/core/server/index.js",
-    "debug": "nodemon --inspect src/core/server/index.js",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "debug": "nodemon --inspect src/index.js",
     "build:ui": "rm -rf build && cd ../group-chat-client && npm run build --prod && cp -r build ../group-chat-client/",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
