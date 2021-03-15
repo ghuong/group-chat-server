@@ -5,8 +5,8 @@ const socketIo = require("socket.io");
  * * Destructured params:
  * @param {http.Server} httpServer the http server instance
  * @param {Function} handleOnConnect handler when client connects: (socket) => Object with connection settings
- * @param {Function} handleOnDisconnect handler when client disconnects: (connectionSettings) => {...}
- * @param {Array} listeners an array of custom listeners, where listener is an Object:
+ * @param {Array} events an array of custom events to listen for
+ * @param {EventEmitter} eventEmitter event emitter
  * {
  *   event: name of the event
  *   handler: handler for event (connectionSettings) => {...}

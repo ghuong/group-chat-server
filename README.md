@@ -84,4 +84,6 @@ src/
 
 ## Acknowledgements
 
-- Project structure inspired by 
+- [Bulletproof Node.js Architecture](https://github.com/santiq/bulletproof-nodejs)
+- [Build a Real-Time Chat App With React Hooks and Socket.io](https://medium.com/swlh/build-a-real-time-chat-app-with-react-hooks-and-socket-io-4859c9afecb0)
+- [Graceful Exit Handler](https://blog.heroku.com/best-practices-nodejs-errors)
