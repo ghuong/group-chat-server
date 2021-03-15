@@ -2,7 +2,7 @@
 
 ## About
 
-This the server component for an anonymous real-time group chat. There is a corresponding [web client](https://github.com/ghuong/group-chat-client).
+This the server component for an anonymous real-time group chat web app. There is a corresponding [web client](https://github.com/ghuong/group-chat-client).
 
 ## Getting Started
 
@@ -43,7 +43,7 @@ npm install
 cp .env.example .env
 ```
 
-3. Build the client project (see Prerequisites), and copy it into build/web: 
+3. Build the client project (see Prerequisites), and copy it into build/web:
 
 ```bash
 npm run build:ui
@@ -51,11 +51,11 @@ npm run build:ui
 
 4. Run tests (make sure they pass):
 
-```
+```bash
 npm test
 ```
 
-5. Start server (with live reload) at http://localhost:4001: 
+5. Start server (with live reload) at http://localhost:4001:
 
 ```bash
 npm start
