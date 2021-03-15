@@ -16,7 +16,7 @@ const socketIo = require("socket.io");
 module.exports = async ({
   httpServer,
   handleOnConnect,
-  events,
+  events = [],
   eventEmitter,
 }) => {
   const ioServer = socketIo(httpServer, {
