@@ -4,6 +4,7 @@ const expressLoader = require("./express");
 const socketIoLoader = require("./socketIo");
 const logger = require("./logger");
 // const config = require("../config");
+const exitHandler = require("./exitHandler");
 
 /**
  * Startup process of app is separated into testable modules
@@ -15,6 +16,10 @@ module.exports = async ({ app } = { app: express() }) => {
 
   // Wrap express app in http.Server
   const httpServer = http.createServer(app);
+
+  // Exit handlers
+  await exitHandler({ server: httpServer });
+  logger.info("✌️ Exit Handler loaded");
 
   await socketIoLoader({ httpServer });
   logger.info("✌️ Socket.IO loaded");
