@@ -14,10 +14,8 @@ module.exports = async ({ app } = { app: express() }) => {
   await expressLoader({ app });
   logger.info("✌️ Express loaded");
 
-  // Wrap express app in http.Server
-  const httpServer = http.createServer(app);
+  const httpServer = http.createServer(app); // wrap app in server
 
-  // Exit handlers
   await exitHandler({ server: httpServer });
   logger.info("✌️ Exit Handler loaded");
 

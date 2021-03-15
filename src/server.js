@@ -11,10 +11,6 @@ const startServer = async () => {
         🛡️  Server listening on port: ${config.port} 🛡️
         ################################################
       `);
-    })
-    .on("error", (err) => {
-      logger.error(err);
-      process.exit(1);
     });
 };
 
