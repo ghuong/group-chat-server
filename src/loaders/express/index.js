@@ -13,6 +13,9 @@ module.exports = async ({ app }) => {
   // Health Check endpoints
   await healthCheckEndpointsLoader({ app });
 
+  // Middleware to serve static assets
+  // app.use(express.static(config.buildFolder));
+
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs
   app.enable("trust proxy");
