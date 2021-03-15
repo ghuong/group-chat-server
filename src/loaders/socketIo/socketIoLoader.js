@@ -16,12 +16,9 @@ const socketIo = require("socket.io");
 module.exports = async ({
   httpServer,
   handleOnConnect,
-  handleOnDisconnect,
-  listeners = [],
+  events,
+  eventEmitter,
 }) => {
-  if (!handleOnConnect || !handleOnDisconnect)
-    throw new Error("Missing args to Socket.IO Loader");
-
   const ioServer = socketIo(httpServer, {
     cors: {
       origin: "*", // ? is this safe?
@@ -32,12 +29,13 @@ module.exports = async ({
   ioServer.on("connection", (socket) => {
     const connectionSettings = { ...handleOnConnect(socket), ioServer, socket };
 
-    listeners.forEach(({ event, handler }) =>
+    // No business logic here! Subscribers to these socketIO events are in subscribers/socketIo
+    Object.values(events).forEach((event) => {
       socket.on(event, (data) =>
-        handler({ ...connectionSettings, event, data })
-      )
-    );
+        eventEmitter.emit(event, { ...connectionSettings, event, data })
+      );
+    });
 
-    socket.on("disconnect", () => handleOnDisconnect(connectionSettings));
+    socket.on("disconnect", () => eventEmitter.emit("disconnect", connectionSettings));
   });
 };

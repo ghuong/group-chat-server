@@ -1,45 +1,37 @@
+const EventEmitter = require("events");
 const config = require("../../config");
 const logger = require("../logger");
 const socketIoLoader = require("./socketIoLoader");
+const subscribersLoader = require("../../subscribers/socketIo");
+
+/**
+ * Handler for when new client connects to SocketIO server
+ * @param {Socket} socket
+ * @returns an Object with custom settings for the connection
+ */
+const handleOnConnect = (socket) => {
+  // Join a conversation
+  const { roomId } = socket.handshake.query;
+  socket.join(roomId);
+  logger.info("Client connected to room", roomId);
+
+  return { roomId };
+};
 
 /**
  * Configures Socket.IO on the server
  * @param {http.Server} httpServer the http server instance
  */
 module.exports = async ({ httpServer }) => {
-  const handleOnConnect = (socket) => {
-    // Join a conversation
-    const { roomId } = socket.handshake.query;
-    socket.join(roomId);
-    logger.info("Client connected to room", roomId);
-
-    return { roomId };
-  };
-
-  const handleOnDisconnect = ({ socket, roomId }) => {
-    // Leave the room if user closes socket
-    logger.info("Client disconnected from room", roomId);
-    socket.leave(roomId);
-  };
-
-  const listeners = [
-    {
-      event: config.socketIo.events.NEW_CHAT_MESSAGE_EVENT,
-      handler: ({ ioServer, socket, roomId, event, data }) => {
-        logger.info(
-          `Received from: Room '${roomId}',`,
-          `Socket '${socket.id.substring(0, 6)}..':`,
-          `"${data.body.substring(0, 30)}"`
-        );
-        ioServer.in(roomId).emit(event, data);
-      }
-    },
-  ];
+  const eventEmitter = new EventEmitter();
 
   await socketIoLoader({
     httpServer,
     handleOnConnect,
-    handleOnDisconnect,
-    listeners
+    events: config.socketIo.events,
+    eventEmitter,
   });
+
+  // set up subscribers to handle socketIO events
+  await subscribersLoader({ eventEmitter });
 };
