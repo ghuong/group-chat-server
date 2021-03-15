@@ -8,15 +8,15 @@ let httpServerAddr;
 let ioServer;
 let eventEmitter;
 
-// const startServer = async () => {
-//   console.log("Starting server...");
-//   httpServer = await http.createServer().listen();
-//   httpServerAddr = await httpServer.address();
-//   const handleOnConnect = () => {};
-//   eventEmitter = { emit: jest.fn() };
-//   ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
-//   console.log("...and server started!");
-// };
+const startServer = async () => {
+  console.log("Starting server...");
+  httpServer = await http.createServer().listen();
+  httpServerAddr = await httpServer.address();
+  const handleOnConnect = () => {};
+  eventEmitter = { emit: jest.fn() };
+  ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
+  console.log("...and server started!");
+};
 
 const closeServer = () => {
   console.log("Closing server...");
@@ -67,25 +67,24 @@ describe("Socket.IO server", () => {
 
   beforeAll(async (done) => {
     console.log("beforeAll(1) starting server...");
-    // startServer().then(() => {
-    //   console.log("...and beforeAll(1) done!");
-    //   done();
-    // });
-    console.log("Starting server...");
-    httpServer = await http.createServer().listen();
-    httpServerAddr = await httpServer.address();
-    const handleOnConnect = () => {};
-    eventEmitter = { emit: jest.fn() };
-    ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
-    console.log("...and server started!");
+    startServer().then(() => {
+      ioServer.on("connection", (mySocket) => {
+        testResult = mySocket;
+      });
+
+      connectClient(done);
+      // console.log("...and beforeAll(1) done!");
+      // done();
+    });
+    // console.log("Starting server...");
+    // httpServer = await http.createServer().listen();
+    // httpServerAddr = await httpServer.address();
+    // const handleOnConnect = () => {};
+    // eventEmitter = { emit: jest.fn() };
+    // ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
+    // console.log("...and server started!");
 
     console.log("...and beforeAll(1) done!");
-
-    ioServer.on("connection", (mySocket) => {
-      testResult = mySocket;
-    });
-
-    connectClient(done);
   });
 
   afterAll((done) => {
@@ -108,20 +107,20 @@ describe("Socket.IO server", () => {
 describe("Socket.IO server with connected client", () => {
   beforeAll(async (done) => {
     console.log("beforeAll(2) starting server...");
-    // startServer().then(() => {
-    //   console.log("...beforeAll(2) done!");
-    //   done();
-    // });
-    console.log("Starting server...");
-    httpServer = await http.createServer().listen();
-    httpServerAddr = await httpServer.address();
-    const handleOnConnect = () => {};
-    eventEmitter = { emit: jest.fn() };
-    ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
-    console.log("...and server started!");
+    startServer().then(() => {
+      console.log("...beforeAll(2) done!");
+      done();
+    });
+    // console.log("Starting server...");
+    // httpServer = await http.createServer().listen();
+    // httpServerAddr = await httpServer.address();
+    // const handleOnConnect = () => {};
+    // eventEmitter = { emit: jest.fn() };
+    // ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
+    // console.log("...and server started!");
 
-    console.log("...and beforeAll(2) done!");
-    done();
+    // console.log("...and beforeAll(2) done!");
+    // done();
   });
   afterAll((done) => {
     console.log("afterAll(2) closing server...");
