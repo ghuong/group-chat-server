@@ -28,21 +28,21 @@ const closeServer = () => {
   console.log("...and server closed!");
 };
 
-const connectClient = async (done) => {
+const connectClient = (done) => {
   console.log("Connecting client...");
   // Do not hardcode server port and address, square brackets are used for IPv6
-  socket = await ioClient.connect(
+  socket = ioClient.connect(
     `http://[${httpServerAddr.address}]:${httpServerAddr.port}`,
     {
       "reconnection delay": 0,
       "reopen delay": 0,
       "force new connection": true,
-      transports: ["websocket"],
+      // transports: ["websocket"],
     }
   );
   socket.on("connect", () => {
     console.log("...and client connected!", socket.id);
-    done && done();
+    done();
   });
 };
 
@@ -63,6 +63,8 @@ afterEach((done) => {
 });
 
 describe("Socket.IO server", () => {
+  let testResult;
+
   beforeAll(async (done) => {
     console.log("beforeAll(1) starting server...");
     // startServer().then(() => {
@@ -78,8 +80,14 @@ describe("Socket.IO server", () => {
     console.log("...and server started!");
 
     console.log("...and beforeAll(1) done!");
-    done();
+
+    ioServer.on("connection", (mySocket) => {
+      testResult = mySocket;
+    });
+
+    connectClient(done);
   });
+
   afterAll((done) => {
     console.log("afterAll(1) closing server...");
     closeServer();
@@ -87,15 +95,13 @@ describe("Socket.IO server", () => {
     done();
   });
 
-  test("allows connections", (done) => {
-    console.log("Test 1 starting...");
-    ioServer.on("connection", (mySocket) => {
-      expect(mySocket).toBeDefined();
-      console.log("...and client connected!", mySocket.id);
-      console.log("...and test 1 done!");
-      done();
-    });
-    connectClient();
+  test("allows connections", () => {
+    console.log("result id", testResult.id);
+    console.log("socket id", socket.id);
+    expect(testResult).toBeDefined();
+    expect(socket).toBeDefined();
+    expect(socket.id).toEqual(testResult.id);
+    // done();
   });
 });
 
