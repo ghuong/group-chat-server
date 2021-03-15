@@ -37,7 +37,7 @@ module.exports = {
    */
   socketIo: {
     events: {
-      NEW_CHAT_MESSAGE_EVENT: "newChatMessage",
+      NEW_CHAT_MESSAGE: "newChatMessage",
     }
   }
 };

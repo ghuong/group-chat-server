@@ -12,7 +12,7 @@ const handleNewChatMessage = ({ ioServer, socket, roomId, event, data }) => {
 
 module.exports = (eventEmitter) => {
   eventEmitter.on(
-    config.socketIo.events.NEW_CHAT_MESSAGE_EVENT,
+    config.socketIo.events.NEW_CHAT_MESSAGE,
     handleNewChatMessage
   );
 };
