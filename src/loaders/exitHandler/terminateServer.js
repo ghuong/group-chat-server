@@ -19,7 +19,7 @@ const terminateServer = (server, options = { coredump: false, timeout: 500 }) =>
   return (code, reason) => (err, promise) => {
     if (err && err instanceof Error) {
       // Log error information, use a proper logging library here :)
-      logger.error(err.message, err.stack);
+      logger.error(err.message, `\n${err.stack}`);
     }
 
     // Attempt a graceful shutdown
