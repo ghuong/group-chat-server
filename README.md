@@ -63,10 +63,25 @@ npm start
 
 See `package.json` for the npm scripts.
 
-## Usage
+## Project Structure
 
-Add notes about how to use the system.
+```
+src/
+│   app.js          # App entry point
+└───loaders/        # Split the startup process into modules
+│   └───index.js    # Loaders entry point
+└───subscribers/    # Event handlers for async tasks
+│   └───socketIo/   # Handlers for events emitted by SocketIO server
+└───api/            # Express route controllers for all the endpoints of the app
+└───config/         # Environment variables and configuration related stuff
+└───models/         # Database models
+└───services/       # All the business logic is here
+```
 
 ## License
 
 [MIT License](https://github.com/ghuong/group-chat-server/blob/main/LICENSE)
+
+## Acknowledgements
+
+- Project structure inspired by 
