@@ -22,9 +22,9 @@ module.exports = ({ httpServer }) => {
     // Listen for new messages
     socket.on(events.NEW_CHAT_MESSAGE_EVENT, (data) => {
       logger.info(
-        `Received from Room '${roomId}'`,
-        `Socket '${socket.id}':`,
-        `\n  "${data.body.substring(0, 30)}"`
+        `Received from: Room '${roomId}',`,
+        `Socket '${socket.id.substring(0, 6)}..':`,
+        `"${data.body.substring(0, 30)}"`
       );
       io.in(roomId).emit(events.NEW_CHAT_MESSAGE_EVENT, data);
     });

@@ -10,41 +10,58 @@ This the server component for an anonymous real-time group chat. There is a corr
 
 1. Have npm installed
 
-2. Clone the matching web client project into the same directory containing the server project (but not inside the server project):
+2. Clone both this server project, and the matching [web client project](https://github.com/ghuong/group-chat-client) into the same directory (but _not_ one inside the other):
 
 ```git
+git clone https://github.com/ghuong/group-chat-server.git
 git clone https://github.com/ghuong/group-chat-client.git
 ```
 
-3. Read the client project's documentation and prepare it.
+3. Read the [client's README](https://github.com/ghuong/group-chat-client) to prepare it.
+
+4. Have MongoDB running locally (or edit MONGODB_URI environment variable in .env)
 
 ### Installing
 
-First, run this to install dependencies and configure a .env file:
+For a quick start, run this in the server project's directory:
 
 ```bash
-npm setup
+npm run quickstart
 ```
 
-Then verify all tests pass:
+This will:
+
+1. Install dependencies:
 
 ```bash
-npm test
+npm install
 ```
 
-Build the client code, and copy it into this project's /build with this script:
+2. Create a basic .env file (dev. environment variables):
+
+```bash
+cp .env.example .env
+```
+
+3. Build the client project (see Prerequisites), and copy it into build/web: 
 
 ```bash
 npm run build:ui
 ```
 
-Start server on localhost:4001 using nodemon:
+4. Run tests (make sure they pass):
 
-```bash
-npm run dev
+```
+npm test
 ```
 
-See package.json for available npm scripts.
+5. Start server (with live reload) at http://localhost:4001: 
+
+```bash
+npm start
+```
+
+See `package.json` for the npm scripts.
 
 ## Usage
 

@@ -2,17 +2,17 @@
   "name": "group-chat-server",
   "version": "1.0.0",
   "description": "Anonymous real-time group chat server",
-  "main": "src/app.js",
+  "main": "src/server.js",
   "scripts": {
-    "setup": "npm install && cp .env.example .env && npm run test && npm start",
+    "quickstart": "npm install && cp .env.example .env && npm run build:ui && npm test && npm start",
     "start": "nodemon",
     "inspect": "nodemon --inspect",
-    "build:ui": "rm -rf build && cd ../group-chat-client && npm run build --prod && cp -r build ../group-chat-client/",
+    "test": "jest",
+    "lint": "eslint .",
+    "build:ui": "rm -rf build/web && cd ../group-chat-client && npm run build --prod && cp -r build ../group-chat-server/build && cd ../group-chat-server/build && mv build web",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
-    "logs:prod": "heroku logs --tail",
-    "lint": "eslint .",
-    "test": "jest"
+    "logs:prod": "heroku logs --tail"
   },
   "author": "Gary Huong",
   "license": "MIT",

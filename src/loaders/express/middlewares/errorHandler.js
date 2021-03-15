@@ -20,6 +20,7 @@ module.exports = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   } else {
+    //TODO: needs to render correct page on client
     return res.status(err.status || 500).render("500");
   }
 };
