@@ -25,7 +25,7 @@ const handleOnConnect = (socket) => {
 module.exports = async ({ httpServer }) => {
   const eventEmitter = new EventEmitter();
 
-  await socketIoLoader({
+  const ioServer = await socketIoLoader({
     httpServer,
     handleOnConnect,
     events: config.socketIo.events,
@@ -34,4 +34,6 @@ module.exports = async ({ httpServer }) => {
 
   // set up subscribers to handle socketIO events
   await subscribersLoader({ eventEmitter });
+
+  return ioServer;
 };

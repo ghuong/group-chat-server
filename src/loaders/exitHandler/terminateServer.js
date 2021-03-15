@@ -4,13 +4,13 @@ const logger = require("../logger");
 
 /**
  * An exit handler for terminating server
- * @param {http.Server} server
+ * @param {http.Server} httpServer
  * @param {{ coredump, timeout }} options
  *   @param {Boolean} coredump should coredump?
  *   @param {Number} timeout timeout in ms
  * @returns exit handler that terminates server gracefully
  */
-const terminateServer = (server, options = { coredump: false, timeout: 500 }) => {
+const terminateServer = (httpServer, ioServer, options = { coredump: false, timeout: 500 }) => {
   // Exit function
   const exit = (code) => {
     options.coredump ? process.abort() : process.exit(code);
@@ -23,7 +23,8 @@ const terminateServer = (server, options = { coredump: false, timeout: 500 }) =>
     }
 
     // Attempt a graceful shutdown
-    server.close(exit);
+    ioServer.close(exit);
+    httpServer.close(exit);
     setTimeout(exit, options.timeout).unref();
   };
 };

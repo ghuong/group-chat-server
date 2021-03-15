@@ -38,4 +38,6 @@ module.exports = async ({
 
     socket.on("disconnect", () => eventEmitter.emit("disconnect", connectionSettings));
   });
+
+  return ioServer;
 };

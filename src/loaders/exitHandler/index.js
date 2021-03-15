@@ -1,7 +1,7 @@
 const terminateServer = require("./terminateServer");
 
-module.exports = async ({ server }) => {
-  const exitHandler = terminateServer(server);
+module.exports = async ({ httpServer, ioServer }) => {
+  const exitHandler = terminateServer(httpServer, ioServer);
 
   process.on("uncaughtException", exitHandler(1, "Unexpected Error"));
   process.on("unhandledRejection", exitHandler(1, "Unhandled Promise"));

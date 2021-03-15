@@ -16,11 +16,11 @@ module.exports = async ({ app } = { app: express() }) => {
 
   const httpServer = http.createServer(app); // wrap app in server
 
-  await exitHandler({ server: httpServer });
-  logger.info("✌️ Exit Handler loaded");
-
-  await socketIoLoader({ httpServer });
+  const ioServer = await socketIoLoader({ httpServer });
   logger.info("✌️ Socket.IO loaded");
+
+  await exitHandler({ httpServer, ioServer });
+  logger.info("✌️ Exit Handler loaded");
 
   return httpServer;
 };
