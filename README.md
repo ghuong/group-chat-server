@@ -69,4 +69,4 @@ Add notes about how to use the system.
 
 ## License
 
-[MIT License](https://github.com/ghuong/simmud/blob/main/LICENSE)
+[MIT License](https://github.com/ghuong/group-chat-server/blob/main/LICENSE)
