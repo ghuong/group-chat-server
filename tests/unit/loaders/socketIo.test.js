@@ -8,20 +8,19 @@ let httpServerAddr;
 let ioServer;
 let eventEmitter;
 
-const startServer = async () => {
+const startServer = async (done) => {
   httpServer = await http.createServer().listen();
   httpServerAddr = await httpServer.address();
   const handleOnConnect = () => {};
   eventEmitter = { emit: jest.fn() };
   ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
+  done && done();
 };
 
-const closeServer = () => {
+const closeServer = (done) => {
   ioServer.close();
   httpServer.close();
-  ioServer = null;
-  httpServer = null;
-  eventEmitter = null;
+  done && done();
 };
 
 const connectClient = (done) => {
@@ -36,27 +35,25 @@ const connectClient = (done) => {
     }
   );
   socket.on("connect", () => {
-    done(); // extremely important to call this here to guarantee that client has connected!
+    done(); //* extremely important to call this in here (not outside) to guarantee that client has connected!
   });
 };
 
-const disconnectClient = () => {
+const disconnectClient = (done) => {
   if (socket.connected) {
     socket.disconnect();
   }
-  socket = null;
+  done && done();
 };
 
-afterEach((done) => {
-  disconnectClient();
-  done();
-});
+afterEach((done) => disconnectClient(done));
 
 describe("Socket.IO server", () => {
   let ioServerSocket;
 
   beforeAll(async (done) => {
     await startServer();
+
     ioServer.on("connection", (mySocket) => {
       ioServerSocket = mySocket;
     });
@@ -64,10 +61,7 @@ describe("Socket.IO server", () => {
     connectClient(done);
   });
 
-  afterAll((done) => {
-    closeServer();
-    done();
-  });
+  afterAll((done) => closeServer(done));
 
   test("allows connections", () => {
     expect(ioServerSocket).toBeDefined();
@@ -77,16 +71,8 @@ describe("Socket.IO server", () => {
 });
 
 describe("Socket.IO server with connected client", () => {
-  beforeAll(async (done) => {
-    await startServer();
-    done();
-  });
-
-  afterAll((done) => {
-    closeServer();
-    done();
-  });
-
+  beforeAll((done) => startServer(done));
+  afterAll((done) => closeServer(done));
   beforeEach((done) => connectClient(done));
 
   test("can communicate with it", (done) => {
