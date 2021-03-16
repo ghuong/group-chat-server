@@ -1,19 +1,22 @@
 const ioClient = require("socket.io-client");
 const http = require("http");
-const ioLoader = require("../../../src/loaders/socketIo/socketIoLoader");
+const ioLoader = require("../../../src/loaders/socketIo/socketIoLoader"); //* this is what we're testing
 
-let socket;
 let httpServer;
 let httpServerAddr;
 let ioServer;
 let eventEmitter;
+let socket;
 
 const startServer = async (done) => {
   httpServer = await http.createServer().listen();
   httpServerAddr = await httpServer.address();
+
+  eventEmitter = { emit: jest.fn((event, connectionSettings) => connectionSettings) };
   const handleOnConnect = () => {};
-  eventEmitter = { emit: jest.fn() };
-  ioServer = await ioLoader({ httpServer, eventEmitter, handleOnConnect });
+  const events = ["pandemic", "christmas"];
+
+  ioServer = await ioLoader({ httpServer, eventEmitter, events, handleOnConnect });
   done && done();
 };
 
@@ -66,7 +69,7 @@ describe("Socket.IO server", () => {
   test("allows connections", () => {
     expect(ioServerSocket).toBeDefined();
     expect(socket).toBeDefined();
-    expect(socket.id).toEqual(ioServerSocket.id);
+    expect(socket.id).toBe(ioServerSocket.id);
   });
 });
 
@@ -86,10 +89,25 @@ describe("Socket.IO server with connected client", () => {
 
   test("should communicate with waiting for socket.io handshakes", (done) => {
     // Emit something from Client to Server
-    socket.emit("example", "some messages");
+    socket.emit("christmas", "a holiday");
+    socket.emit("pandemic", "a pandemic");
+    socket.emit("unknown", "n/a"); // ignored
+    socket.emit("unknown", "n/a"); // ignored
+    socket.emit("unknown", "n/a"); // ignored
     // Use timeout to wait for socket.io server handshakes
     setTimeout(() => {
       // Put your server side expect() here
+      expect(eventEmitter.emit.mock.calls.length).toBe(3);
+      expect(eventEmitter.emit.mock.calls[0][0]).toBe("disconnect");
+      expect(eventEmitter.emit.mock.calls[1][0]).toBe("christmas");
+      expect(eventEmitter.emit.mock.calls[2][0]).toBe("pandemic");
+
+      const returnValue = eventEmitter.emit.mock.results[2].value;
+      expect(returnValue.ioServer).toEqual(ioServer);
+      expect(returnValue.socket.id).toBe(socket.id);
+      expect(returnValue.event).toBe("pandemic");
+      expect(returnValue.data).toBe("a pandemic");
+
       done();
     }, 50);
   });
