@@ -86,7 +86,7 @@ describe("Socket.IO server with connected client", () => {
   afterAll((done) => closeServer(done));
   beforeEach((done) => connectClient(done));
 
-  test("can communicate with it", (done) => {
+  test("can send communications to it", (done) => {
     // once connected, emit Hello World
     ioServer.emit("echo", "Hello World");
     socket.once("echo", (message) => {
@@ -95,7 +95,7 @@ describe("Socket.IO server with connected client", () => {
     });
   });
 
-  test("can receive communications", (done) => {
+  test("can receive communications from it", (done) => {
     // Emit somethings from Client to Server
     socket.emit("christmas", "a holiday");
     socket.emit("pandemic", "a pandemic");
@@ -123,26 +123,3 @@ describe("Socket.IO server with connected client", () => {
     }, 50);
   });
 });
-
-// describe("Socket.IO server using EventEmitter", () => {
-//   const eventHandler = jest.fn((event, connectionSettings) => ({
-//     ...connectionSettings,
-//     event,
-//   }));
-
-//   beforeAll((done) => startServer(done, eventHandler));
-//   afterAll((done) => closeServer(done));
-//   beforeEach((done) => connectClient(done));
-
-//   test("can re-emit events to subscribers", (done) => {
-//     socket.emit("christmas", "a holiday");
-//     eventEmitter.on("christmas", (connectionSettings) => {
-//       expect(connectionSettings.ioServer).toEqual(ioServer);
-//       expect(connectionSettings.socket.id).toBe(socket.id);
-//       expect(connectionSettings.event).toBe("christmas");
-//       expect(connectionSettings.data).toBe("a holiday");
-//       expect(connectionSettings.foo).toBe("bar");
-//       done();
-//     });
-//   });
-// });
