@@ -1,4 +1,4 @@
-const logger = require("../../loaders/logger");
+const logger = require("../../../loaders/logger");
 
 /**
  * Handler for when client disconnects from SocketIO server
@@ -10,6 +10,4 @@ const handleOnDisconnect = ({ socket, roomId }) => {
   socket.leave(roomId);
 };
 
-module.exports = (eventEmitter) => {
-  eventEmitter.on("disconnect", handleOnDisconnect);
-};
+module.exports = handleOnDisconnect;

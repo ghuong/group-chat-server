@@ -1,12 +1,12 @@
 const socketIo = require("socket.io");
 
 /**
- * Configures a SocketIO server
+ * Starts a SocketIO server, and registers handlers for socket events
  * * Destructured params:
- * @param {http.Server} httpServer the http server instance
+ * @param {http.Server} httpServer the http server instance to be wrapped
  * @param {Function} handleOnConnect handler when client connects: (socket) => Object with connection settings
- * @param {Array} events an array of custom events to listen for
- * @param {EventEmitter} eventEmitter event emitter
+ * @param {Function} eventHandler handler for all other socket events: (event, connectionSettings) => ...
+ * @param {Array<String>} events list of names of events accepted by eventHandler
  * {
  *   event: name of the event
  *   handler: handler for event (connectionSettings) => {...}
@@ -16,8 +16,8 @@ const socketIo = require("socket.io");
 module.exports = async ({
   httpServer,
   handleOnConnect,
+  eventHandler = () => {},
   events = [],
-  eventEmitter,
 }) => {
   const ioServer = socketIo(httpServer, {
     cors: {
@@ -27,16 +27,20 @@ module.exports = async ({
   });
 
   ioServer.on("connection", (socket) => {
+    if (!handleOnConnect) {
+      handleOnConnect = (socket) => {
+        socket.join();
+        return {};
+      };
+    };
+
     const connectionSettings = { ...handleOnConnect(socket), ioServer, socket };
 
-    // No business logic here! Subscribers to these socketIO events are in subscribers/socketIo
-    Object.values(events).forEach((event) => {
+    events.forEach((event) => {
       socket.on(event, (data) =>
-        eventEmitter.emit(event, { ...connectionSettings, event, data })
+        eventHandler(event, { ...connectionSettings, data })
       );
     });
-
-    socket.on("disconnect", () => eventEmitter.emit("disconnect", connectionSettings));
   });
 
   return ioServer;

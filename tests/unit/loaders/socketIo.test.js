@@ -1,26 +1,25 @@
 const ioClient = require("socket.io-client");
 const http = require("http");
-const EventEmitter = require("events");
 const ioLoader = require("../../../src/loaders/socketIo/socketIoLoader"); //* this is what we're testing
 
 let httpServer;
 let httpServerAddr;
 let ioServer;
-let eventEmitter;
 let socket;
 
-const startServer = async (done, customEventEmitter) => {
+const startServer = async (done, eventHandler) => {
   httpServer = await http.createServer().listen();
   httpServerAddr = await httpServer.address();
-
-  eventEmitter = customEventEmitter || {
-    emit: jest.fn((event, connectionSettings) => connectionSettings),
-  };
 
   const handleOnConnect = () => ({ foo: "bar" });
   const events = ["pandemic", "christmas"];
 
-  ioServer = await ioLoader({ httpServer, eventEmitter, events, handleOnConnect });
+  ioServer = await ioLoader({
+    httpServer,
+    events,
+    handleOnConnect,
+    eventHandler,
+  });
   done && done();
 };
 
@@ -78,7 +77,12 @@ describe("Socket.IO server", () => {
 });
 
 describe("Socket.IO server with connected client", () => {
-  beforeAll((done) => startServer(done));
+  const eventHandler = jest.fn((event, connectionSettings) => ({
+    ...connectionSettings,
+    event,
+  }));
+
+  beforeAll((done) => startServer(done, eventHandler));
   afterAll((done) => closeServer(done));
   beforeEach((done) => connectClient(done));
 
@@ -102,14 +106,12 @@ describe("Socket.IO server with connected client", () => {
     // Use timeout to wait for socket.io server handshakes
     setTimeout(() => {
       // expect server to re-emit each socket event
-      const mockEmit = eventEmitter.emit.mock;
-      expect(mockEmit.calls.length).toBe(4);
-      expect(mockEmit.calls[0][0]).toBe("disconnect"); // first call, first arg
-      expect(mockEmit.calls[1][0]).toBe("christmas"); // second call, first arg
-      expect(mockEmit.calls[2][0]).toBe("pandemic");
-      expect(mockEmit.calls[3][0]).toBe("christmas");
+      expect(eventHandler.mock.calls.length).toBe(3);
+      expect(eventHandler.mock.calls[0][0]).toBe("christmas"); // 1st call, 1st arg
+      expect(eventHandler.mock.calls[1][0]).toBe("pandemic"); // 2nd call, 1st arg
+      expect(eventHandler.mock.calls[2][0]).toBe("christmas");
 
-      const returnedSecondArg = mockEmit.results[2].value; // third call's return value
+      const returnedSecondArg = eventHandler.mock.results[1].value; // 2nd call's return value
       // our mocked emit function just returns the second arg
       expect(returnedSecondArg.ioServer).toEqual(ioServer);
       expect(returnedSecondArg.socket.id).toBe(socket.id);
@@ -122,20 +124,25 @@ describe("Socket.IO server with connected client", () => {
   });
 });
 
-describe("Socket.IO server using EventEmitter", () => {
-  beforeAll((done) => startServer(done, new EventEmitter()));
-  afterAll((done) => closeServer(done));
-  beforeEach((done) => connectClient(done));
+// describe("Socket.IO server using EventEmitter", () => {
+//   const eventHandler = jest.fn((event, connectionSettings) => ({
+//     ...connectionSettings,
+//     event,
+//   }));
 
-  test("can re-emit events to subscribers", (done) => {
-    socket.emit("christmas", "a holiday");
-    eventEmitter.on("christmas", (connectionSettings) => {
-      expect(connectionSettings.ioServer).toEqual(ioServer);
-      expect(connectionSettings.socket.id).toBe(socket.id);
-      expect(connectionSettings.event).toBe("christmas");
-      expect(connectionSettings.data).toBe("a holiday");
-      expect(connectionSettings.foo).toBe("bar");
-      done();
-    });
-  });
-});
+//   beforeAll((done) => startServer(done, eventHandler));
+//   afterAll((done) => closeServer(done));
+//   beforeEach((done) => connectClient(done));
+
+//   test("can re-emit events to subscribers", (done) => {
+//     socket.emit("christmas", "a holiday");
+//     eventEmitter.on("christmas", (connectionSettings) => {
+//       expect(connectionSettings.ioServer).toEqual(ioServer);
+//       expect(connectionSettings.socket.id).toBe(socket.id);
+//       expect(connectionSettings.event).toBe("christmas");
+//       expect(connectionSettings.data).toBe("a holiday");
+//       expect(connectionSettings.foo).toBe("bar");
+//       done();
+//     });
+//   });
+// });

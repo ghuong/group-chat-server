@@ -1,8 +1,7 @@
-const EventEmitter = require("events");
 const config = require("../../config");
 const logger = require("../logger");
+const eventHandler = require("../../services/socketIo");
 const socketIoLoader = require("./socketIoLoader");
-const subscribersLoader = require("../../subscribers/socketIo");
 
 /**
  * Handler for when new client connects to SocketIO server
@@ -23,17 +22,12 @@ const handleOnConnect = (socket) => {
  * @param {http.Server} httpServer the http server instance
  */
 module.exports = async ({ httpServer }) => {
-  const eventEmitter = new EventEmitter();
-
   const ioServer = await socketIoLoader({
     httpServer,
     handleOnConnect,
-    events: config.socketIo.events,
-    eventEmitter,
+    eventHandler,
+    events: Object.values(config.socketIo.events),
   });
-
-  // set up subscribers to handle socketIO events
-  await subscribersLoader({ eventEmitter });
 
   return ioServer;
 };
