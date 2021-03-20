@@ -2,14 +2,23 @@ const config = require("../../config");
 const disconnect = require("./eventHandlers/disconnect");
 const newChatMessage = require("./eventHandlers/newChatMessage");
 const makeSocketService = require("./socketService");
+const makeSocketIoWrapper = require("./socketIoWrapper");
 
 /**
  * Handle socketIO event
  * @param {String} event name of event
- * @param {*} connectionSettings
+ * @param {*} connectionSettings object containing ioServer, socket, roomId, data
  */
-const eventHandler = (event, connectionSettings) => {
-  const socketService = makeSocketService(event, connectionSettings);
+const eventHandler = (event, { ioServer, socket, roomId, data }) => {
+  const socketService = makeSocketService(
+    event,
+    {
+      userId: socket.id, // TODO: pass in an actual user id
+      roomId,
+      data,
+    },
+    makeSocketIoWrapper({ ioServer, socket, roomId })
+  );
 
   const events = config.socketIo.events;
   switch (event) {

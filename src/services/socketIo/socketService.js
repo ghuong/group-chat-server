@@ -1,19 +1,11 @@
-const makeSocketIoWrapper = require("./socketIoWrapper");
-
-const makeSocketService = (event, { ioServer, socket, roomId, data }) => {
-  const _socketIo = makeSocketIoWrapper({ ioServer, socket, roomId });
-
-  const getRoomId = () => roomId; //TODO: remove
-  const getMessage = () => data.body;
-  const getUserId = () => socket.id; //TODO: give proper user id
-
+const makeSocketService = (event, { userId, roomId, data }, socketIoWrapper) => {
   return {
     event,
-    getRoomId,
-    getUserId,
-    getMessage,
-    disconnect: _socketIo.disconnect,
-    sendToAllInRoom: () => _socketIo.sendToAllInRoom(event, data),
+    getRoomId: () => roomId, // TODO: remove
+    getUserId: () => userId,
+    getMessage: () => data.body,
+    disconnect: () => socketIoWrapper.disconnect(),
+    sendToAllInRoom: () => socketIoWrapper.sendToAllInRoom(event, data),
   };
 };
 
