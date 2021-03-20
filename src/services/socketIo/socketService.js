@@ -1,18 +1,19 @@
+const makeSocketIoWrapper = require("./socketIoWrapper");
+
 const makeSocketService = (event, { ioServer, socket, roomId, data }) => {
-  const disconnect = () => socket.leave(roomId);
-  const forwardToAllInRoom = () => ioServer.in(roomId).emit(event, data);
+  const _socketIo = makeSocketIoWrapper({ ioServer, socket, roomId });
 
   const getRoomId = () => roomId; //TODO: remove
   const getMessage = () => data.body;
-  const getUserId = () => socket.id;
+  const getUserId = () => socket.id; //TODO: give proper user id
 
   return {
     event,
     getRoomId,
     getUserId,
     getMessage,
-    disconnect,
-    forwardToAllInRoom,
+    disconnect: _socketIo.disconnect,
+    sendToAllInRoom: () => _socketIo.sendToAllInRoom(event, data),
   };
 };
 

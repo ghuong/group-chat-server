@@ -6,7 +6,7 @@ const handleNewChatMessage = (socketService) => {
     `Socket '${socketService.getUserId().substring(0, 6)}..':`,
     `"${socketService.getMessage().substring(0, 30)}"`
   );
-  socketService.forwardToAllInRoom(); // broadcast message to everyone in same room
+  socketService.sendToAllInRoom(); // broadcast message to everyone in same room
 };
 
 module.exports = handleNewChatMessage;
