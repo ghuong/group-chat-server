@@ -5,9 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "quickstart": "npm install && cp .env.example .env && npm run build:ui && npm test && npm start",
-    "start": "nodemon",
-    "inspect": "nodemon --inspect",
-    "test": "jest",
+    "start": "cross-env NODE_ENV=production node src/server",
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "inspect": "npm run dev -- --inspect",
     "lint": "eslint .",
     "build:ui": "rm -rf build/web && cd ../group-chat-client && npm run build --prod && cp -r build ../group-chat-server/build && cd ../group-chat-server/build && mv build web",
     "deploy": "git push heroku main",
@@ -23,6 +24,8 @@
     "socket.io": "^3.1.2"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.21",
+    "cross-env": "^7.0.3",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "jest": "^26.6.3",
