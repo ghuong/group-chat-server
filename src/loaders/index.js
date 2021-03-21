@@ -1,3 +1,4 @@
+require("express-async-errors");
 const express = require("express");
 const http = require("http");
 const expressLoader = require("./express");
