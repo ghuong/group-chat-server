@@ -32,7 +32,7 @@ module.exports = {
    * That long string from your mongo service
    */
   databaseURL:
-    this.env === "test"
+    process.env.NODE_ENV === "test"
       ? process.env.TEST_MONGODB_URI
       : process.env.MONGODB_URI,
 
