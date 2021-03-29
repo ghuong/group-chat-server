@@ -1,6 +1,8 @@
+require("../../testHelper");
+
 const ioClient = require("socket.io-client");
 const http = require("http");
-const ioLoader = require("../../../src/loaders/socketIo/socketIoLoader"); //* this is what we're testing
+const ioLoader = require("@root/loaders/socketIo/socketIoLoader"); //* this is what we're testing
 
 describe("Socket.IO Loader", () => {
 

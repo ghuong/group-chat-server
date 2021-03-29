@@ -2,8 +2,8 @@ require("../testHelper");
 
 const bcrypt = require("bcryptjs");
 
-const config = require("@root/config");
-const User = require("@root/models/user");
+const config = require("@config");
+const User = require("@models/user");
 
 const USER_PASSWORD = "sekret";
 

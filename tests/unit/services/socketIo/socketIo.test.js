@@ -1,4 +1,6 @@
-const makeSocketService = require("../../../../src/services/socketIo/socketService");
+require("../../../testHelper");
+
+const makeSocketService = require("@services/socketIo/socketService");
 
 describe("Socket.IO Service", () => {
   const socketIoWrapper = {
