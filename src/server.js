@@ -1,3 +1,4 @@
+require("module-alias/register");
 const config = require("./config");
 const logger = require("./loaders/logger");
 

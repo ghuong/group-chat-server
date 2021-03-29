@@ -2,6 +2,7 @@ require("express-async-errors");
 const express = require("express");
 const http = require("http");
 const expressLoader = require("./express");
+const mongooseLoader = require("./mongoose");
 const socketIoLoader = require("./socketIo");
 const logger = require("./logger");
 // const config = require("../config");
@@ -12,6 +13,9 @@ const exitHandler = require("./exitHandler");
  * @returns the fully configured http.Server instance
  */
 module.exports = async ({ app } = { app: express() }) => {
+  await mongooseLoader();
+  logger.info("✌️ DB loaded and connected!");
+
   await expressLoader({ app });
   logger.info("✌️ Express loaded");
 

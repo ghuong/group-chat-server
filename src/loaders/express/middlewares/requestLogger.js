@@ -1,4 +1,5 @@
 const morgan = require("morgan");
+const config = require("@root/config");
 
 morgan.token("body", (req) => {
   if (req.method === "POST") {
@@ -8,8 +9,8 @@ morgan.token("body", (req) => {
   }
 });
 
-module.exports = morgan((tokens, request, response) => {
-  return [
+module.exports = morgan(
+  (tokens, request, response) => [
     tokens.method(request, response),
     tokens.url(request, response),
     tokens.status(request, response),
@@ -18,5 +19,8 @@ module.exports = morgan((tokens, request, response) => {
     tokens["response-time"](request, response),
     "ms",
     tokens.body(request, response),
-  ].join(" ");
-});
+  ].join(" "),
+  {
+    skip: (req, res) => config.env === "test",
+  }
+);
