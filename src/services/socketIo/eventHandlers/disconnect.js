@@ -1,4 +1,4 @@
-const logger = require("../../../loaders/logger");
+const logger = require("@logger");
 
 /**
  * Handler for when client disconnects from SocketIO server

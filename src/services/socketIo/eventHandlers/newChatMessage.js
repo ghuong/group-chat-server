@@ -1,4 +1,4 @@
-const logger = require("../../../loaders/logger");
+const logger = require("@logger");
 
 const handleNewChatMessage = (socketService) => {
   logger.info(

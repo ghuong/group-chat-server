@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
-const User = require("@root/models/user");
-const config = require("@root/config");
+const User = require("@models/user");
+const config = require("@config");
 
 module.exports = (app) => {
   app.use("/users", router);

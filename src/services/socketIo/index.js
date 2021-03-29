@@ -1,4 +1,4 @@
-const config = require("../../config");
+const config = require("@config");
 const disconnect = require("./eventHandlers/disconnect");
 const newChatMessage = require("./eventHandlers/newChatMessage");
 const makeSocketService = require("./socketService");

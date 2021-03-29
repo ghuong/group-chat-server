@@ -1,4 +1,4 @@
-const logger = require("../../logger");
+const logger = require("@logger");
 
 // Error handler middleware (must be the last middleware used)
 module.exports = (err, req, res, next) => {

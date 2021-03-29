@@ -1,6 +1,6 @@
 // Credit: https://blog.heroku.com/best-practices-nodejs-errors
 
-const logger = require("../logger");
+const logger = require("@logger");
 
 /**
  * An exit handler for terminating server

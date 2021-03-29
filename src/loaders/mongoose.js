@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const config = require("@root/config");
+const config = require("@config");
 
 async function connectDb() {
   const connection = await mongoose.connect(config.databaseURL, {

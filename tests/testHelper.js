@@ -1,10 +1,7 @@
-// Require this file in every test to use aliases and to have access to environment variables
+// Require this at the top of every test file to use aliases
 
-const moduleAlias = require("module-alias");
+require("../src/config");
 
-moduleAlias.addAliases({
-  "@root": `${__dirname}/../src`,
+require("module-alias").addAliases({
   "@helpers": `${__dirname}/helpers`,
 });
-
-require("@root/config");

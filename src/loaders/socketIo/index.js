@@ -1,6 +1,6 @@
-const config = require("../../config");
-const logger = require("../logger");
-const eventHandler = require("../../services/socketIo");
+const config = require("@config");
+const logger = require("@logger");
+const eventHandler = require("@services/socketIo");
 const socketIoLoader = require("./socketIoLoader");
 
 /**

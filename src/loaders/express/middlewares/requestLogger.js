@@ -1,5 +1,5 @@
 const morgan = require("morgan");
-const config = require("@root/config");
+const config = require("@config");
 
 morgan.token("body", (req) => {
   if (req.method === "POST") {

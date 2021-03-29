@@ -1,6 +1,5 @@
-require("module-alias/register");
 const config = require("./config");
-const logger = require("./loaders/logger");
+const logger = require("@logger");
 
 (async () => {
   const httpServer = await require("./loaders")();

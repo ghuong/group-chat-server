@@ -1,3 +1,11 @@
+require("module-alias").addAliases({
+  "@root": `${__dirname}/..`,
+  "@config": __dirname,
+  "@logger": `${__dirname}/../loaders/logger`,
+  "@models": `${__dirname}/../models`,
+  "@services": `${__dirname}/../services`,
+});
+
 const dotenv = require("dotenv");
 
 const envFound = dotenv.config();
@@ -23,9 +31,10 @@ module.exports = {
   /**
    * That long string from your mongo service
    */
-  databaseURL: this.env === "test"
-    ? process.env.TEST_MONGODB_URI
-    : process.env.MONGODB_URI,
+  databaseURL:
+    this.env === "test"
+      ? process.env.TEST_MONGODB_URI
+      : process.env.MONGODB_URI,
 
   /**
    * API configs
@@ -39,7 +48,7 @@ module.exports = {
    */
   auth: {
     saltRounds: 10,
-    minPasswordLength: 8
+    minPasswordLength: 8,
   },
 
   /**
@@ -54,6 +63,6 @@ module.exports = {
     events: {
       DISCONNECT: "disconnect",
       NEW_CHAT_MESSAGE: "newChatMessage",
-    }
-  }
+    },
+  },
 };
