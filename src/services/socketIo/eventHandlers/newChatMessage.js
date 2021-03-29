@@ -1,6 +1,6 @@
 const logger = require("@logger");
 
-const handleNewChatMessage = (socketService) => {
+function handleNewChatMessage(socketService) {
   logger.info(
     `Received from: Room '${socketService.getRoomId()}',`,
     `Socket '${socketService.getUserId().substring(0, 6)}..':`,

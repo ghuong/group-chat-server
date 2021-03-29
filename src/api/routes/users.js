@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("@models/user");
 const config = require("@config");
 
-module.exports = (app) => {
+module.exports = function (app) {
   app.use("/users", router);
 
   router.get("/", async (req, res) => {

@@ -1,7 +1,7 @@
 const logger = require("@logger");
 
 // Error handler middleware (must be the last middleware used)
-module.exports = (err, req, res, next) => {
+function handleError(err, req, res, next) {
   logger.error(err.message);
 
   switch (err.name) {
@@ -24,3 +24,5 @@ module.exports = (err, req, res, next) => {
     return res.status(err.status || 500).render("500");
   }
 };
+
+module.exports = handleError;

@@ -9,7 +9,7 @@ const makeSocketIoWrapper = require("./socketIoWrapper");
  * @param {String} event name of event
  * @param {*} connectionSettings object containing ioServer, socket, roomId, data
  */
-const eventHandler = (event, { ioServer, socket, roomId, data }) => {
+function eventHandler(event, { ioServer, socket, roomId, data }) {
   const socketService = makeSocketService(
     event,
     {

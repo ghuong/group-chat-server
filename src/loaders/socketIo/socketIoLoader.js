@@ -13,12 +13,12 @@ const socketIo = require("socket.io");
  * }
  * * {Object} connectionSettings: contains: ioServer, socket, roomId, and data (for custom listeners)
  */
-module.exports = async ({
+async function loadSocketIoServer({
   httpServer,
   handleOnConnect,
   eventHandler = () => {},
   events = [],
-}) => {
+}) {
   const ioServer = socketIo(httpServer, {
     cors: {
       origin: "*", // ? is this safe?
@@ -45,3 +45,5 @@ module.exports = async ({
 
   return ioServer;
 };
+
+module.exports = loadSocketIoServer;

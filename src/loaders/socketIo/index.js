@@ -8,7 +8,7 @@ const socketIoLoader = require("./socketIoLoader");
  * @param {Socket} socket
  * @returns an Object with custom settings for the connection
  */
-const handleOnConnect = (socket) => {
+function handleOnConnect(socket) {
   // Join a conversation
   const { roomId } = socket.handshake.query;
   socket.join(roomId);
@@ -21,7 +21,7 @@ const handleOnConnect = (socket) => {
  * Configures Socket.IO on the server
  * @param {http.Server} httpServer the http server instance
  */
-module.exports = async ({ httpServer }) => {
+async function loadSocketIo({ httpServer }) {
   const ioServer = await socketIoLoader({
     httpServer,
     handleOnConnect,
@@ -31,3 +31,5 @@ module.exports = async ({ httpServer }) => {
 
   return ioServer;
 };
+
+module.exports = loadSocketIo;

@@ -12,7 +12,7 @@ const exitHandler = require("./exitHandler");
  * Startup process of app is separated into testable modules
  * @returns the fully configured http.Server instance
  */
-module.exports = async ({ app } = { app: express() }) => {
+async function loadServer({ app } = { app: express() }) {
   await mongooseLoader();
   logger.info("✌️ DB loaded and connected!");
 
@@ -29,3 +29,5 @@ module.exports = async ({ app } = { app: express() }) => {
 
   return httpServer;
 };
+
+module.exports = loadServer;

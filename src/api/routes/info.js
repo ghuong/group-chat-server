@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-module.exports = (app) => {
+module.exports = function (app) {
   app.use("/info", router);
 
   router.get("/", (req, res) => {

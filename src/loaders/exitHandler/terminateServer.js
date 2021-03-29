@@ -10,7 +10,7 @@ const logger = require("@logger");
  *   @param {Number} timeout timeout in ms
  * @returns exit handler that terminates server gracefully
  */
-const terminateServer = (httpServer, ioServer, options = { coredump: false, timeout: 500 }) => {
+function terminateServer(httpServer, ioServer, options = { coredump: false, timeout: 500 }) {
   // Exit function
   const exit = (code) => {
     options.coredump ? process.abort() : process.exit(code);

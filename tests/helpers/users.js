@@ -10,7 +10,7 @@ const USER_PASSWORD = "sekret";
 /**
  * Initialize the Users database
  */
-const initUsersDb = async () => {
+async function initUsersDb() {
   await User.deleteMany({});
   const passwordHash = await bcrypt.hash(USER_PASSWORD, config.auth.saltRounds);
   const user = new User({ username: "root", passwordHash });
@@ -20,7 +20,7 @@ const initUsersDb = async () => {
 /**
  * @returns all users as JSON objects
  */
-const usersInDb = async () => {
+async function usersInDb() {
   const users = await User.find({});
   return users.map((u) => u.toJSON());
 };

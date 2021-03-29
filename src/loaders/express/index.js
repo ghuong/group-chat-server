@@ -9,7 +9,7 @@ const middlewares = require("./middlewares");
  * Express Loader
  * @param {express.Application} app
  */
-module.exports = async ({ app }) => {
+async function loadExpressApp({ app }) {
   // Health Check endpoints
   await healthCheckEndpointsLoader({ app });
 
@@ -42,3 +42,5 @@ module.exports = async ({ app }) => {
   // Error Handler
   app.use(middlewares.errorHandler);
 };
+
+module.exports = loadExpressApp;

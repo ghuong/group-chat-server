@@ -3,7 +3,7 @@ const info = require("./routes/info");
 const users = require("./routes/users");
 
 // guaranteed to get dependencies
-module.exports = () => {
+function loadRoutes() {
   const app = require("express").Router();
   info(app);
   // auth(app);
@@ -11,3 +11,5 @@ module.exports = () => {
 
   return app;
 };
+
+module.exports = loadRoutes;

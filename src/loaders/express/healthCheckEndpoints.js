@@ -1,4 +1,4 @@
-module.exports = ({ app }) => {
+function loadHealthCheckEndpoints({ app }) {
   /**
    * Health Check endpoints
    */
@@ -9,3 +9,5 @@ module.exports = ({ app }) => {
     res.status(200).end();
   });
 };
+
+module.exports = loadHealthCheckEndpoints;

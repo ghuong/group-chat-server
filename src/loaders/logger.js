@@ -1,8 +1,8 @@
-const info = (...params) => {
+function info(...params) {
   console.log(...params);
 };
 
-const error = (...params) => {
+function error(...params) {
   console.error(...params);
 };
 
