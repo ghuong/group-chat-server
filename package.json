@@ -8,7 +8,7 @@
   },
   "scripts": {
     "quickstart": "npm install && cp .env.example .env && npm run build:ui && npm test && npm start",
-    "start": "cross-env NODE_ENV=production node src/server",
+    "start": "node src/server.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "inspect": "npm run dev -- --inspect",
