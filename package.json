@@ -10,7 +10,7 @@
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "inspect": "npm run dev -- --inspect",
     "lint": "eslint .",
-    "build:ui": "rm -rf build/web && cd ../group-chat-client && npm run build --prod && cp -r build ../group-chat-server/build && cd ../group-chat-server/build && mv build web",
+    "build:ui": "rm -rf build/client && mkdir build && cd ../group-chat-client && npm run build --prod && cp -r build ../group-chat-server/build/client",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
     "logs:prod": "heroku logs --tail"

@@ -54,7 +54,7 @@ module.exports = {
   /**
    * Where built client's static assets are stored
    */
-  buildFolder: "build/web",
+  buildFolder: "build/client",
 
   /**
    * SocketIO configs
