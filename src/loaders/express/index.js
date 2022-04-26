@@ -34,7 +34,9 @@ async function loadExpressApp({ app }) {
   app.use(express.json());
 
   // Load API Request Logger
-  app.use(middlewares.requestLogger);
+  if (config.env === "development") {
+    app.use(middlewares.requestLogger);
+  }
 
   // Load API Routes
   app.use(config.api.prefix, routes());
