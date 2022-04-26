@@ -8,7 +8,9 @@ module.exports = {
   errorHandler,
 };
 
+console.log(`config.env: ${config.env}`);
 if (config.env === "development") {
+  console.log("require(./requestLogger)");
   const requestLogger = require("./requestLogger");
 
   module.exports.requestLogger = requestLogger;
