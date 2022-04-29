@@ -14,10 +14,9 @@ async function loadExpressApp({ app }) {
   await healthCheckEndpointsLoader({ app });
 
   // Middleware to serve static assets
-  // Express only serves static assets in production
-  if (config.env === "production") {
-    app.use(express.static(config.buildFolder));
-  }
+  // if (config.env === "production") { // to serve only in production
+  app.use(express.static(config.buildFolder));
+  // }
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs
