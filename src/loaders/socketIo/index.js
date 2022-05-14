@@ -15,10 +15,15 @@ function handleOnConnect(socket, ioServer) {
   const { roomId, username } = socket.handshake.query;
   socket.join(roomId);
   logger.info("Client connected to room", roomId);
-  // broadcast to all in room that we just joined
-  ioServer.in(roomId).emit(USER_JOINED_ROOM_EVENT, username);
 
-  return { roomId, username };
+  // broadcast to all in room that we just joined
+  const user = {
+    name: username,
+    id: socket.id, // TODO: change to something else
+  };
+  ioServer.in(roomId).emit(USER_JOINED_ROOM_EVENT, user);
+
+  return { roomId, user };
 };
 
 /**

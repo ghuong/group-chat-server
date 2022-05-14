@@ -65,6 +65,7 @@ module.exports = {
     events: {
       DISCONNECT: "disconnect",
       NEW_CHAT_MESSAGE: "newChatMessage",
+      ANNOUNCE_PRESENCE: "announcePresence",
     },
   },
 };

@@ -1,6 +1,6 @@
 const makeSocketService = (
   event,
-  { userId, roomId, data, username },
+  { user, roomId, data },
   socketIoWrapper
 ) => {
   const USER_LEFT_ROOM_EVENT = "userDisconnected";
@@ -8,12 +8,13 @@ const makeSocketService = (
   return {
     event,
     getRoomId: () => roomId, // TODO: remove
-    getUserId: () => userId,
+    getUser: () => user,
     getMessage: () => data.body,
     disconnect: () => socketIoWrapper.disconnect(),
     sendToAllInRoom: () => socketIoWrapper.sendToAllInRoom(event, data),
+    sendTo: (recipientSocketId, payload = data) => socketIoWrapper.sendToSocketId(event, recipientSocketId, payload),
     announceDisconnectionToAllInRoom: () =>
-      socketIoWrapper.sendToAllInRoom(USER_LEFT_ROOM_EVENT, username),
+      socketIoWrapper.sendToAllInRoom(USER_LEFT_ROOM_EVENT, user),
   };
 };
 
