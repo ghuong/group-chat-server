@@ -1,5 +1,7 @@
 function makeSocketIoWrapper({ ioServer, socket, roomId, namespace }) {
-  const disconnect = () => socket.leave(roomId);
+  const disconnect = () => {
+    socket.leave(roomId);
+  };
 
   const sendToClient = (event, ...args) => socket.emit(event, ...args);
 

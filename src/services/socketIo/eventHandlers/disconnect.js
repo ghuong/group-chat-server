@@ -7,7 +7,8 @@ const logger = require("@logger");
 function handleOnDisconnect(socketService) {
   // Leave the room if user closes socket
   logger.info("Client disconnected from room", socketService.getRoomId());
+  socketService.announceDisconnectionToAllInRoom();
   socketService.disconnect();
-};
+}
 
 module.exports = handleOnDisconnect;

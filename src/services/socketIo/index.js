@@ -1,6 +1,9 @@
 const config = require("@config");
+
+// Event handlers
 const disconnect = require("./eventHandlers/disconnect");
 const newChatMessage = require("./eventHandlers/newChatMessage");
+
 const makeSocketService = require("./socketService");
 const makeSocketIoWrapper = require("./socketIoWrapper");
 
@@ -9,13 +12,14 @@ const makeSocketIoWrapper = require("./socketIoWrapper");
  * @param {String} event name of event
  * @param {*} connectionSettings object containing ioServer, socket, roomId, data
  */
-function eventHandler(event, { ioServer, socket, roomId, data }) {
+function handleEvent(event, { ioServer, socket, roomId, data, username }) {
   const socketService = makeSocketService(
     event,
     {
       userId: socket.id, // TODO: pass in an actual user id
       roomId,
       data,
+      username,
     },
     makeSocketIoWrapper({ ioServer, socket, roomId })
   );
@@ -29,4 +33,4 @@ function eventHandler(event, { ioServer, socket, roomId, data }) {
   }
 };
 
-module.exports = eventHandler;
+module.exports = handleEvent;

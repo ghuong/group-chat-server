@@ -5,8 +5,8 @@ const socketIo = require("socket.io");
  * * Destructured params:
  * @param {http.Server} httpServer the http server instance to be wrapped
  * @param {Function} handleOnConnect handler when client connects: (socket) => Object with connection settings
- * @param {Function} eventHandler handler for all other socket events: (event, connectionSettings) => ...
- * @param {Array<String>} events list of names of events accepted by eventHandler
+ * @param {Function} handleEvent handler for all other socket events: (event, connectionSettings) => ...
+ * @param {Array<String>} events list of names of events accepted by handleEvent
  * {
  *   event: name of the event
  *   handler: handler for event (connectionSettings) => {...}
@@ -16,7 +16,7 @@ const socketIo = require("socket.io");
 async function loadSocketIoServer({
   httpServer,
   handleOnConnect,
-  eventHandler = () => {},
+  handleEvent = () => {},
   events = [],
 }) {
   const ioServer = socketIo(httpServer, {
@@ -27,18 +27,19 @@ async function loadSocketIoServer({
   });
 
   ioServer.on("connection", (socket) => {
+    // provide a default event handler for onConnect event (if not provided)
     if (!handleOnConnect) {
       handleOnConnect = (socket) => {
         socket.join();
         return {};
       };
-    };
+    }
 
-    const connectionSettings = { ...handleOnConnect(socket), ioServer, socket };
+    const connectionSettings = { ...handleOnConnect(socket, ioServer), ioServer, socket };
 
     events.forEach((event) => {
       socket.on(event, (data) =>
-        eventHandler(event, { ...connectionSettings, data })
+        handleEvent(event, { ...connectionSettings, data })
       );
     });
   });

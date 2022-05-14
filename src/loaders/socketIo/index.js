@@ -1,6 +1,6 @@
 const config = require("@config");
 const logger = require("@logger");
-const eventHandler = require("@services/socketIo");
+const handleEvent = require("@services/socketIo");
 const socketIoLoader = require("./socketIoLoader");
 
 /**
@@ -8,13 +8,17 @@ const socketIoLoader = require("./socketIoLoader");
  * @param {Socket} socket
  * @returns an Object with custom settings for the connection
  */
-function handleOnConnect(socket) {
+function handleOnConnect(socket, ioServer) {
+  const USER_JOINED_ROOM_EVENT = "userConnected";
+
   // Join a conversation
-  const { roomId } = socket.handshake.query;
+  const { roomId, username } = socket.handshake.query;
   socket.join(roomId);
   logger.info("Client connected to room", roomId);
+  // broadcast to all in room that we just joined
+  ioServer.in(roomId).emit(USER_JOINED_ROOM_EVENT, username);
 
-  return { roomId };
+  return { roomId, username };
 };
 
 /**
@@ -25,7 +29,7 @@ async function loadSocketIo({ httpServer }) {
   const ioServer = await socketIoLoader({
     httpServer,
     handleOnConnect,
-    eventHandler,
+    handleEvent,
     events: Object.values(config.socketIo.events),
   });
 
