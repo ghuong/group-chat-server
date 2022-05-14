@@ -1,5 +1,9 @@
 # Group Chat Server
 
+Live at [group-chat-gary.herokuapp.com](https://group-chat-gary.herokuapp.com).
+
+![screenshot](https://live.staticflickr.com/65535/52065497752_d90374b334_h.jpg)
+
 ## About
 
 This the server component for an anonymous real-time group chat web app. There is a corresponding [web client](https://github.com/ghuong/group-chat-client).
