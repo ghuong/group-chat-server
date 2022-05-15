@@ -6,7 +6,7 @@ Live at [group-chat-gary.herokuapp.com](https://group-chat-gary.herokuapp.com).
 
 ## About
 
-This the Node.js (Express) server component for a real-time group chat web app. It exposes a [Socket.io](https://socket.io/) server, allowing clients to keep open a two-way socket connection through which they can broadcast messages to one another in real-time. There is a corresponding [React web client](https://github.com/ghuong/group-chat-client).
+This is the Node.js (Express) server component for a real-time group chat app. It exposes a [Socket.io](https://socket.io/) server, allowing clients to keep open a two-way socket connection through which they can broadcast chat messages to one another in real-time. There is a corresponding [React web client](https://github.com/ghuong/group-chat-client).
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ git clone https://github.com/ghuong/group-chat-server.git
 git clone https://github.com/ghuong/group-chat-client.git
 ```
 
-3. Read the [client's README](https://github.com/ghuong/group-chat-client) to prepare it (basically run `npm install`)
+3. Read the [client's README](https://github.com/ghuong/group-chat-client) to prepare it (i.e. run `npm install` in client project directory)
 
 4. Have MongoDB running locally (or edit `MONGODB_URI` environment variable in `.env` file)
 
@@ -47,7 +47,9 @@ npm install
 cp .env.example .env
 ```
 
-3. Build the client project (see Prerequisites), and copy it into `build/client/` folder:
+*Note*: You'll need to update `MONGODB_URI`
+
+3. Build the client project (see Prerequisites), and copy it into `build/client/` folder (to be served as static assets by Express):
 
 ```bash
 npm run build:ui
@@ -81,7 +83,7 @@ src/
 ```
 
 ```
-src/services/socketIo/      # Defines `handleEvent` to handle Socket.io events
+src/services/socketIo/      # Defines `handleEvent` function to handle Socket.io events
 │   index.js                # `handleEvent` entry point
 │   socketIoApiWrapper.js   # Easier-to-use wrapper for Socket.io API
 │   socketService.js        # Methods that interact with socketIo API (through the wrapper), on behalf of eventHandlers
