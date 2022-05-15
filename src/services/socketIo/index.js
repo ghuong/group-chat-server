@@ -6,7 +6,7 @@ const newChatMessage = require("./eventHandlers/newChatMessage");
 const announcePresence = require("./eventHandlers/announcePresence");
 
 const makeSocketService = require("./socketService");
-const makeSocketIoWrapper = require("./socketIoWrapper");
+const makeSocketIoApiWrapper = require("./socketIoApiWrapper");
 
 /**
  * Handle socketIO event
@@ -21,7 +21,7 @@ function handleEvent(event, { ioServer, socket, roomId, data, user }) {
       roomId,
       data,
     },
-    makeSocketIoWrapper({ ioServer, socket, roomId })
+    makeSocketIoApiWrapper({ ioServer, socket, roomId })
   );
 
   const events = config.socketIo.events;

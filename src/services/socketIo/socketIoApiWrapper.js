@@ -1,4 +1,4 @@
-function makeSocketIoWrapper({ ioServer, socket, roomId, namespace }) {
+function makeSocketIoApiWrapper({ ioServer, socket, roomId, namespace }) {
   const disconnect = () => {
     socket.leave(roomId);
   };
@@ -58,4 +58,4 @@ function makeSocketIoWrapper({ ioServer, socket, roomId, namespace }) {
   };
 }
 
-module.exports = makeSocketIoWrapper;
+module.exports = makeSocketIoApiWrapper;
