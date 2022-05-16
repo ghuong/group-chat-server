@@ -13,8 +13,8 @@ const exitHandler = require("./exitHandler");
  * @returns the fully configured http.Server instance
  */
 async function loadServer({ app } = { app: express() }) {
-  await mongooseLoader();
-  logger.info("✌️ DB loaded and connected!");
+  // await mongooseLoader();
+  // logger.info("✌️ DB loaded and connected!");
 
   await expressLoader({ app });
   logger.info("✌️ Express loaded");
